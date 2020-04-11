@@ -1,0 +1,75 @@
+{
+        $schema: "https://vega.github.io/schema/vega-lite/v4.json",
+        transform: [{ filter: "datum.backers > 0 & datum.backers < 200" }],
+        title: "Success rate and Median goal wrt. Number of backers",
+        data: {
+          url:
+            "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_vis_2_new.csv",
+          format: { type: "csv" },
+        },
+        width: 500,
+        height: 550,
+        layer: [
+          {
+            mark: {
+              type: "bar",
+              tooltip: true,
+              point: true,
+            },
+            encoding: {
+              x: {
+                bin: true,
+                field: "backers",
+                type: "quantitative",
+                title: "Number of Backers",
+              },
+              y: {
+                field: "usd_goal_real",
+                type: "quantitative",
+                aggregate: "median",
+                axis: {
+                  title: "Median Goal",
+                  titleColor: "darkblue",
+                  titleFontSize: 15,
+                },
+              },
+              color: {
+                aggregate: "count",
+                type: "quantitative",
+                scale: { range: "heatmap" },
+              },
+            },
+          },
+          {
+            mark: {
+              type: "line",
+              tooltip: true,
+              point: { color: "orange" },
+              color: "orange",
+              size: 3,
+            },
+            encoding: {
+              x: {
+                bin: true,
+                field: "backers",
+                type: "quantitative",
+                axis: {
+                  title: "Number of Backers",
+                  titleFontSize: 15,
+                },
+              },
+              y: {
+                field: "successful",
+                type: "quantitative",
+                aggregate: "mean",
+                axis: {
+                  title: "Success Ratio",
+                  titleColor: "orange",
+                  titleFontSize: 15,
+                },
+              },
+            },
+          },
+        ],
+        resolve: { scale: { y: "independent", color: "independent" } },
+      };

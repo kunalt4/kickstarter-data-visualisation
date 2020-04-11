@@ -1,0 +1,76 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_category_state.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    
+    "transform": [
+        {
+            "filter":{
+                "field": "state", "oneOf":["successful", "failed", "canceled", "suspended", "live"]
+            }
+        }
+    ],
+    "width": 700,
+    "height": 550,
+    "title": "Main Categories of Kickstarter Projects",
+    "resolve": {"scale": {"color": "independent"}},
+    "mark": {
+            "type": "bar",
+            "tooltip": true,
+            "dx":45
+        },
+
+        "encoding": {
+        
+            "color": {
+                "field": "state",
+                "type": "nominal",
+                "title": "Status of project",
+                "scale": {
+                    "range": "category"
+                }
+                
+            },
+            "y": {
+                "field": "main_category",
+                "type": "nominal",
+                "title": "Main Categories",
+                "sort": {
+                    "op": "count",
+                    "field": "main_category",
+                    "order": "descending"
+                }
+            },
+            "x": {
+                "field": "ID",
+                "type": "quantitative",
+                "aggregate": "count",
+                "title": "Number of Projects",
+                "stack":"zero"
+            },
+            
+            "tooltip":[{
+                "field":"state",
+                "title": "Status of Project",
+                "type": "nominal"
+            },
+            {
+                "field":"main_category",
+                "title": "Project Category",
+                "type": "nominal"
+            },
+            {
+                "field":"ID",
+                "title": "Number of Projects",
+                "type": "nominal",
+                "aggregate":"count"
+            
+            }]
+        }
+    
+    
+}

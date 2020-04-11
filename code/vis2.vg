@@ -1,0 +1,192 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_vis_2_new.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "columns": 2,
+    "concat": [
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "equal": "successful"
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip": true
+            },
+            "title": "Days to Goal being achieved in successful projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            35
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "oneOf": ["canceled"]
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip":{
+                    "content":"data"
+                }
+            },
+            "title": "Days to cancellation of projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                    
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            65
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "equal": "failed"
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip":true
+            },
+            "title": "Average campaign of failed projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            40
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "mark": {
+                "type": "point",
+                "tooltip":true
+            },
+            "title": "Average campaign of all projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            40
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        }
+    ],
+    "resolve": {
+        "scale": {
+            "y": "independent"
+        }
+    }
+}

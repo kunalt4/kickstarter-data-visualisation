@@ -1,0 +1,262 @@
+<html>
+<head>
+    <title>Kunal Jagdeep Tolani - Assignment - Visualisation 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Kunal Jagdeep Tolani</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">19200153</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+    <p><a href="https://www.kaggle.com/kemical/kickstarter-projects" target="_blank" rel="noopener">Kickstarter Dataset 2018</a>.</p>
+    <p>This data set contains information on status of all Kickstarter projects from 2009 to early 2018. This dataset provides the broad and narrow categories, as well the launch dates, deadlines and status of each project. It also contains information about the goal and pledged values - in both local currency and USD - along with the country and currency.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions:</strong></td>
+    <td style="vertical-align: top;">How many days does a successful campaign last? How many days does a campaign last before being cancelled? What is the average deadline for failed campaigns? What is the relationship with the goal needed for funding?</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_vis_2_new.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "columns": 2,
+    "concat": [
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "equal": "successful"
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip": true
+            },
+            "title": "Days to Goal being achieved in successful projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            35
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "oneOf": ["canceled"]
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip":{
+                    "content":"data"
+                }
+            },
+            "title": "Days to cancellation of projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                    
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            65
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "transform": [
+                {
+                    "filter": {
+                        "field": "state",
+                        "equal": "failed"
+                    }
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "tooltip":true
+            },
+            "title": "Average campaign of failed projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            40
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        },
+        {
+            "width": 300,
+            "height": 350,
+            "mark": {
+                "type": "point",
+                "tooltip":true
+            },
+            "title": "Average campaign of all projects",
+            "encoding": {
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Main Category",
+                    "scale": {
+                        "range": "category"
+                    }
+                },
+                "x": {
+                    "field": "Days_Open",
+                    "type": "quantitative",
+                    "aggregate": "average",
+                    "title": "Average number of Days in Campaign",
+                    "scale": {
+                        "domain": [
+                            25,
+                            40
+                        ]
+                    }
+                },
+                "y": {
+                    "field": "usd_goal_real",
+                    "type": "quantitative",
+                    "aggregate": "median",
+                    "title": "Median Goal in USD"
+                }
+            }
+        }
+    ],
+    "resolve": {
+        "scale": {
+            "y": "independent"
+        }
+    }
+}
+        vegaEmbed("#vis", yourVlSpec);
+  </script>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">Scatter plots are used for answering the initial questions. Each plot shows the median goal with respect to the average number of days in the campaign. Three scatter plots are used - One for successful projects, another for cancelled projects, and a third for failed projects. Different colours signify different main categories of projects. Hovering over a point shows the category, along with median goal and average number of days.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insights:</strong></td>
+<td style="vertical-align: top;">For successful projects, it takes crafts, games and arts the least amount of days to reach their average goal - between 28 and 30. Of these three, the median goals of arts and crafts are lower, while those of games are higher - people are  willing to pay more for games than crafts in general. Technology by far takes the most amount of days to reach its goal - 33 - however the median goal in technology projects are just as high at around 10000. Food and design based projects also reach their funding quite quickly wrt their higher goals.
+<p/>For cancelled projects, the median goal is noticeably higher - this might point to a reason in cancellation - the projects did not look like they were going to be funded in time. Again, technology is a big outlier in median goal.
+As seen from the previous graph, most successful technology projects reach a goal of 10000 in 33 days. The cancelled technology projects here have a median goal of 30000, and were cancelled in 35 days. It is a similar scenario for almost all fields - a high goal and small amount of time before being cancelled. An exception is theatre, where projects tend to wait for 2 months before cancellation. This might be due to outliers being present, however, it still is a significant delay.
+
+<p/>For failed projects, the case is similar - a combination of higher goal and lower deadlines leading to funding not being achieved. A huge cluster is formed in the middle, indicating there is no category wise difference in goals and deadlines of most failed projects. Only for the category Fashion can it be said that a couple more days could have made a difference, as for successful projects the median goal is 5000 usd and 30 days, while for failed ones it is 6000 usd and 32 days.
+
+<p/> Finally, we have the overall campaigns. On average, most projects have a deadline of a month to 35 days. The median values of the overall projects correspond similarly or are slightly lower than the median goal of failed projects, and considerably higher than successful projects - this might point to more projects failing to get funding than succeeding. 
+ </td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations:</strong></td>
+<td style="vertical-align: top;">I have used a scatter plot to consider days of campaign and the goal across categories.<p/>
+  An alternative to median goal value could be the average of goals, but for a dataset with a varying number of values and outliers, median seems to be better suited for insights.
+  A bar chart could've been plotted instead of a scatter to show relations, and that was what was considered first, but the it would be difficult to convey all pieces of information - categories, days and the goal for each category on a bar. 
+  The charts all range a bit different from each other, since having them all on the same scale meant that a lot of the data gets hidden or clustered in one region.
+</td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">The dataset for the project was huge, and was filtered to show only a few columns for this visualisation. The number of days in the campaign were calculated from the deadlines and launch dates. The column main_category was passed as the column category.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

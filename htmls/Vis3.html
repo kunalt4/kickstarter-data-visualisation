@@ -1,0 +1,140 @@
+<html>
+<head>
+    <title>Kunal Jagdeep Tolani - Assignment - Visualisation 3</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Kunal Jagdeep Tolani</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">19200153</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+    <p><a href="https://www.kaggle.com/kemical/kickstarter-projects" target="_blank" rel="noopener">Kickstarter Dataset 2018</a>.</p>
+    <p>This data set contains information on status of all kickstarter projects from 2009 to early 2018. This dataset provides the broad and narrow categories, as well the launch dates, deadlines and status of each project. It also contains information about the goal and pledged values - in both local currency and USD - along with the country and currency.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions:</strong></td>
+    <td style="vertical-align: top;">How many projects usually succeed? Which category of projects are likely to succeed?</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_category_state.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    
+    "transform": [
+        {
+            "filter":{
+                "field": "state", "oneOf":["successful", "failed", "canceled", "suspended", "live"]
+            }
+        }
+    ],
+    "width": 700,
+    "height": 550,
+    "title": "Main Categories of Kickstarter Projects",
+    "resolve": {"scale": {"color": "independent"}},
+    "mark": {
+            "type": "bar",
+            "tooltip": true,
+            "dx":45
+        },
+
+        "encoding": {
+        
+            "color": {
+                "field": "state",
+                "type": "nominal",
+                "title": "Status of project",
+                "scale": {
+                    "range": "category"
+                }
+                
+            },
+            "y": {
+                "field": "main_category",
+                "type": "nominal",
+                "title": "Main Categories",
+                "sort": {
+                    "op": "count",
+                    "field": "main_category",
+                    "order": "descending"
+                }
+            },
+            "x": {
+                "field": "ID",
+                "type": "quantitative",
+                "aggregate": "count",
+                "title": "Number of Projects",
+                "stack":"zero"
+            },
+            
+            "tooltip":[{
+                "field":"state",
+                "title": "Status of Project",
+                "type": "nominal"
+            },
+            {
+                "field":"main_category",
+                "title": "Project Category",
+                "type": "nominal"
+            },
+            {
+                "field":"ID",
+                "title": "Number of Projects",
+                "type": "nominal",
+                "aggregate":"count"
+            
+            }]
+        }
+    
+    
+}
+        vegaEmbed("#vis", yourVlSpec);
+  </script>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">The stacked bar chart shows the categories of data and the number of projects for each of the categories. Each bar represents a category, while the different colours on the bar indicate the status. Hovering over a part shows the status, the category and the number of projects in that category and state.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insights:</strong></td>
+<td style="vertical-align: top;">We see that a lot of media related projects - music, films and video, publishing - are put up for funding on Kickstarter, as opposed to projects in other categories or arts like dance and crafts. This may be due to the nature of Kickstarter, which is more suitable to large projects in general as opposed to continuous projects like theater or journalism, that might be more suited to other mediums <a href="https://blog.patreon.com/patreon-kickstarter-indiegogo" target="_blank" rel="noopener">like Patreon</a>. It could also be the case that media and technology projects are simply more popular.<p/>In terms of status of funding, we see that there are more failures and cancelled projects than successful ones - a project is more likely to fail than succeed. However, there are some categories - Music, Theater, Comics and Dance - for which this is not the case. 
+This makes it all the more interesting that there are only a few of dance and comics projects.<p/>
+As can be made out from the previous visualisation, the median goal for categories like technology, design and food is higher, which might be a reason for comparitively higher number of failures. The projects with a higher success rate usually have lower goals.
+Overall, only a few projects are cancelled. </td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations:</strong></td>
+<td style="vertical-align: top;">I have used a stacked bar chart as it is a very effective way to compare the size differences between two categories, while also indicating the differences within each group because of the colour differences. <p/>
+  The chart would've been better with more explicit numbering of each group, but that was difficult to incorporate because of  the extremely small values of states such as live and suspended. Instead, I've used a tooltip which shows the number of projects, the state, and category when hovered over.
+</td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">The dataset for the project was huge, and was filtered to show only a few columns for this visualisation. The projects for which status was undefined were filtered out.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

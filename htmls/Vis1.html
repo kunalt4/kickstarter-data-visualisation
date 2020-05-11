@@ -1,0 +1,218 @@
+<html>
+  <head>
+    <title>Kunal Jagdeep Tolani - Assignment - Visualisation 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+  </head>
+  <body>
+    <table style="width: 850px;" cellspacing="5" cellpadding="5">
+      <tbody>
+        <tr>
+          <td style="width: 200px; vertical-align: top;">
+            <strong>Name:&nbsp;</strong>
+          </td>
+          <td style="vertical-align: top;">Kunal Jagdeep Tolani</td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+          <td style="vertical-align: top;">19200153</td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">
+            <strong>Dataset description:</strong>
+          </td>
+          <td style="vertical-align: top;">
+            <p>
+              <a
+                href="https://www.kaggle.com/kemical/kickstarter-projects"
+                target="_blank"
+                rel="noopener"
+                >Kickstarter Dataset 2018</a
+              >.
+            </p>
+            <p>
+              This data set contains information on status of all kickstarter
+              projects from 2009 to early 2018. This dataset provides the broad
+              and narrow categories, as well the launch dates, deadlines and
+              status of each project. It also contains information about the
+              goal and pledged values - in both local currency and USD - along
+              with the country and currency.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">
+            <strong>Initial questions:</strong>
+          </td>
+          <td style="vertical-align: top;">
+            How did the number of backers influence the result of the project?
+            Does a higher number of backers really mean a larger overall goal?
+            What is the relation between goals and success wrt number of
+            backers?
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <div id="vis" class="container"></div>
+    <script type="text/javascript">
+      var yourVlSpec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v4.json",
+        transform: [{ filter: "datum.backers > 0 & datum.backers < 200" }],
+        title: "Success rate and Median goal wrt. Number of backers",
+        data: {
+          url:
+            "https://raw.githubusercontent.com/kunalt4/kickstarter-data/master/kickstarter_vis_2_new.csv",
+          format: { type: "csv" },
+        },
+        width: 500,
+        height: 550,
+        layer: [
+          {
+            mark: {
+              type: "bar",
+              tooltip: true,
+              point: true,
+            },
+            encoding: {
+              x: {
+                bin: true,
+                field: "backers",
+                type: "quantitative",
+                title: "Number of Backers",
+              },
+              y: {
+                field: "usd_goal_real",
+                type: "quantitative",
+                aggregate: "median",
+                axis: {
+                  title: "Median Goal",
+                  titleColor: "darkblue",
+                  titleFontSize: 15,
+                },
+              },
+              color: {
+                aggregate: "count",
+                type: "quantitative",
+                scale: { range: "heatmap" },
+              },
+            },
+          },
+          {
+            mark: {
+              type: "line",
+              tooltip: true,
+              point: { color: "orange" },
+              color: "orange",
+              size: 3,
+            },
+            encoding: {
+              x: {
+                bin: true,
+                field: "backers",
+                type: "quantitative",
+                axis: {
+                  title: "Number of Backers",
+                  titleFontSize: 15,
+                },
+              },
+              y: {
+                field: "successful",
+                type: "quantitative",
+                aggregate: "mean",
+                axis: {
+                  title: "Success Ratio",
+                  titleColor: "orange",
+                  titleFontSize: 15,
+                },
+              },
+            },
+          },
+        ],
+        resolve: { scale: { y: "independent", color: "independent" } },
+      };
+      vegaEmbed("#vis", yourVlSpec);
+    </script>
+    <hr />
+    <table style="width: 850px;" cellspacing="5" cellpadding="5">
+      <tbody>
+        <tr>
+          <td style="width: 200px; vertical-align: top;">
+            <strong>Description:&nbsp;</strong>
+          </td>
+          <td style="vertical-align: top;">
+            The bar chart shows the median goal with an increase in number of
+            backers. Each bar shows the median goal for that particular number
+            of backers. The colour of the bar represents the count of records
+            for each group of backers. The orange line shows the average success
+            ratio of projects. Hovering over the bar shows the group of backers,
+            the median goal and the number of records. Hovering over a point on
+            the line shows the success ratio.
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><strong>Insights:</strong></td>
+          <td style="vertical-align: top;">
+            From the chart we can see, that as the number of backers increases,
+            the success percentage of projects also increases. This means with a
+            larger number of backers, projects are more likely to be funded -
+            which is pretty obvious.
+            <p />
+            Except, with a larger number of backers, the median goal amount also
+            increases. That points to more overall success with a large number
+            of backers and a higher goal, than a low goal and low number of
+            backers. This might be the effect of a large amount being funded by
+            a few chosen backers - which is a bigger probability with a large
+            number of backers as opposed to fewer. So projects with a large
+            number of backers tend to succeed even taking in the higher goal, as
+            opposed to projects with a low number of backers with a
+            corresponding low goal.
+            <p />
+            As expected, a large number of projects have between 0 and 20
+            backers, and the number gets lower as the number of backers
+            increases. An interesting observation seen here is that for backers
+            in the range 0-20, the median goal is higher, while for backers in
+            the range 20-40 and 40-60, the median goal is quite low - which also
+            leads to a better success rate in these ranges. With a huge number
+            of projects having very few backers, the success rate is
+            understandably low - as most projects fail if they do not get enough
+            backers. Once a threshold of backers has crossed, the success rate
+            increases even with higher goals.
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">
+            <strong>Design considerations:</strong>
+          </td>
+          <td style="vertical-align: top;">
+            I have used a layer to convey both parts of the question, as opposed
+            to two different charts. This leads to the interesting insight
+            above.
+            <p />
+            An alternative approach to this would've been to plot the success
+            and failure numbers instead of success ratio, but I felt a ratio is
+            better suited since total count varies with the backer, as shown
+            using the bar gradient. Another alternative thought of was using a
+            scatter plot to chart the percent success and failures with backers,
+            but this was discarded as a binned line plot to group number of
+            backers seemed more appropriate for an overall trend.
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 200px; vertical-align: top;">
+            <strong>Data filtering and transformation:&nbsp;</strong>
+          </td>
+          <td style="vertical-align: top;">
+            The dataset for the project was huge, and was filtered to show only
+            a few columns for this visualisation. The number of backers was
+            limited to 200 for the purpose of this visualisation, and a column
+            created for successes in the data, with the value of successful
+            projects kept to 1, as opposed to 0 for other statuses. This was
+            done for easier calculation of average success in the visualisation.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
